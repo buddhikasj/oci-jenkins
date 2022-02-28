@@ -1,10 +1,9 @@
 pipeline {
   agent {
-    kubernetes {	    
-      label 'aqua-scanner'
+    kubernetes {
       yamlFile 'KubernetesPod.yaml'
     }
-  }	
+  }
   environment {
 	  DOCKER_REGISTRY_CREDS = credentials('Docker-Registry')
   }  	
