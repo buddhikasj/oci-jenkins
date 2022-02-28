@@ -1,39 +1,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: scanner-pod
+  name: kaniko-test
+  namespace: jenkins
 spec:
-      securityContext:
-          privileged: true
-          runAsUser: 0
-      containers:
-      - name: podman-pod
-        image: quay.io/podman/stable
-        args:
-          - sleep
-          - "1000000"
-        securityContext:
-          privileged: true
-          allowPrivilegeEscalation: true
-          runAsUser: 0
-        volumeMounts:
-          - name: run
-            mountPath: /run
-          - name: runtime
-            mountPath: /var/run/crio/crio.sock
-          - name: containers
-            mountPath: /var/lib/containers
-          - name: scanner
-            mountPath: /tmp/scanner
-      volumes:
-          hostPath:
-           path:  /var/run/crio/crio.sock
-        - name: run
-          hostPath:
-           path:  /run
-        - name: containers
-          hostPath:
-           path:  /var/lib/containers
-        - name: scanner
-          hostPath:
-           path:  /tmp/scanner
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - /busybox/cat    
+    tty: true
+    volumeMounts:
+      - name: kaniko-secret
+        mountPath: /kaniko/.docker/ 
