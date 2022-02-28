@@ -1,6 +1,7 @@
 pipeline {
   agent {
     kubernetes {
+      label 'aqua-scanner'
       yamlFile 'KubernetesPod.yaml'
     }
   }
